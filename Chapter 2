@@ -23,6 +23,7 @@ post=like*histprior(p,midpt,prior)
 post=post/sum(post)
 ps=sample(p,replace = T,prob = post)
 hist(ps,xlab = "p")
+par(mforw=c(1,1))
 
 #2.9.3
 qbeta(c(0.05,0.95),23,8)
