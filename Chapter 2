@@ -1,0 +1,70 @@
+#2.9.1
+library(LearnBayes)
+p=seq(0,1,by=0.125)
+prior=c(0.001,0.001,0.95,rep(0.008,6))
+a=6;b=4
+data=c(6,4)
+post <- pdisc(p,prior,data)
+plot(p,post,type="h",xlab = "p",ylab = "Posterior probability")
+cbind(p,post)
+print(post[p==0])
+
+#2.9.2
+par(mfrow=c(1,2))
+midpt <- seq(0.05,0.95,by=0.1)
+prior <- c(1,2,3,4,5,5,4,3,2,1)
+prior=prior/sum(prior)
+p <- seq(0,1,by=0.01)
+hs=histprior(p,midpt,prior)
+plot(p,hs,type="l")
+h=8;t=12
+like=dbeta(p,h+1,t+1)
+post=like*histprior(p,midpt,prior)
+post=post/sum(post)
+ps=sample(p,replace = T,prob = post)
+hist(ps,xlab = "p")
+
+#2.9.3
+qbeta(c(0.05,0.95),23,8)
+1-pbeta(.6,23,8)
+p=rbeta(1000,23,8)
+pbetap(c(23,8),10,9:10)
+y=rbinom(1000,10,p)
+table(y)
+
+#2.9.4
+p=seq(0.1,0.5,by=0.1)
+prob.j=c(0.5,0.2,0.2,0.05,0.05)
+j=sample(p,1000,replace=T,prob=prob.j)
+mean(j);sd(j)
+s=rbeta(1000,3,12)
+mean(s);sd(s)
+pred.j=pdiscp(p,prob.j,12,0:12)
+cbind(0:12,pred.j)
+pred.s=pbetap(c(3,12),12,0:12)
+cbind(0:12,pred.s)
+
+#2.9.5
+mu <- seq(20,70,by=10)
+prior <- c(0.1,0.15,0.25,0.25,0.15,0.1)
+y <- c(38.6,42.4,57.5,40.5,51.7,67.1,33.4,60.9,64.1,40.1,40.7,6.4)
+ybar <- mean(y)
+ysigma <- sd(y)
+ybar
+n <- length(y)
+like=exp(-n/(2*ysigma^2)*(mu-ybar)^2)
+like
+post=prior*like/sum(prior*like)
+post
+discint(cbind(mu,post),0.8)
+
+#2.9.6
+lambda <- seq(0.5,3,by=0.5)
+prior <- c(0.1,0.2,0.3,0.2,0.15,0.05)
+y=12;t=6
+post <- prior*exp(-t*lambda)*(t*lambda)^y/sum(prior*exp(-t*lambda)*(t*lambda)^y)
+cbind(lambda,post)
+y=0;t=7
+prob=prior*exp(-t*lambda)*(t*lambda)^y/sum(prior*exp(-t*lambda)*(t*lambda)^y)
+prob
+cbind(lambda,prob)
